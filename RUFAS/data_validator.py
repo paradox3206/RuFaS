@@ -785,9 +785,13 @@ class DataValidator:
     ) -> tuple[bool, str]:
         """Helper function to validate that the specified paths exist."""
         for rel_path in paths_to_check:
-            full_path = os.path.join(input_root, rel_path)
-            if not os.path.isfile(full_path):
-                return self._generate_fail_message(f"Invalid path '{rel_path}' in '{key}'", info_map)
+            if key == "properties":
+                if not os.path.isfile(rel_path):
+                    return self._generate_fail_message(f"Invalid path '{rel_path}' in '{key}'", info_map)
+            else:
+                full_path = os.path.join(input_root, rel_path)
+                if not os.path.isfile(full_path):
+                    return self._generate_fail_message(f"Invalid path '{rel_path}' in '{key}'", info_map)
         return True, ""
 
     def _validate_metadata_properties(
