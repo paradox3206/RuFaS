@@ -18,6 +18,7 @@ import psutil
 from RUFAS.general_constants import GeneralConstants
 from RUFAS.graph_generator import GraphGenerator
 from RUFAS.report_generator import ReportGenerator
+from RUFAS.rufas_time import RufasTime
 from RUFAS.units import MeasurementUnits
 from RUFAS.user_constants import UserConstants
 from RUFAS.util import Utility
@@ -206,7 +207,7 @@ class OutputManager(object):
                     "function": "__init__",
                 },
             )
-            self.time = None
+            self.time = RufasTime() # Breaks, due to circular reference?
             self._variables_usage_counter: Counter[str] = collections.Counter()
             self.is_end_to_end_testing_run: bool = False
             self.is_first_post_processing: bool = True
@@ -332,7 +333,10 @@ class OutputManager(object):
         else:
             pool[key]["values"].append(deepcopy(value))
 
-    def add_variable(self, name: str, value: Any, info_map: dict[str, Any], first_info_map_only: bool = False) -> None:
+    def add_variable(
+            self, name: str, value: Any, info_map: dict[str, Any], first_info_map_only: bool = False,
+            override_simday: bool = False
+    ) -> None:
         """
         Adds a variable to the pool.
 
@@ -358,6 +362,8 @@ class OutputManager(object):
         first_info_map_only : bool, default False
             If true, records only the first info map passed for that variable. If false, records all info maps passed
             for that variable.
+        override_simday: bool, default False
+            if true, info_map["simulation_day"] is overridden with the current simulation day if it is present.
 
         Raises
         ------
@@ -373,6 +379,9 @@ class OutputManager(object):
         if isinstance(units, dict) and len(info_map["units"]) != len(value) and value != {}:
             raise KeyError(f"'units' missing in units dict for a variable in {name}.")
         units = self._stringify_units(units)
+
+        if override_simday or "simulation_day" not in info_map.keys():
+            info_map["simulation_day"] = self.time.simulation_day
 
         key = self._generate_key(name, info_map)
         self._add_to_pool(self.variables_pool, key, value, {**info_map, "units": units}, first_info_map_only)
