@@ -18,6 +18,7 @@ from RUFAS.output_manager import OutputManager
 from RUFAS.biophysical.field.manager.field_manager import FieldManager
 from RUFAS.biophysical.manure.manure_manager import ManureManager
 from RUFAS.rufas_time import RufasTime
+from RUFAS.units import MeasurementUnits
 from RUFAS.weather import Weather
 
 
@@ -438,6 +439,31 @@ class SimulationEngine:
             self.emissions_estimator.calculate_purchased_feed_emissions(daily_purchased_feeds_fed)
         self.time.record_time()
         self.weather.record_weather(self.time)
+
+    def record_time(self) -> None:
+        """
+        Records the current day, simulated year, and calendar year of the simulation in the OutputManager.
+        """
+        info_map = {
+            "class": self.__class__.__name__,
+            "function": self.record_time.__name__,
+            "prefix": "RufasTime",
+        }
+        self.om.add_variable(
+            "day", self.time.current_julian_day, dict(info_map, **{"units": MeasurementUnits.JULIAN_DAY})
+        )
+        self.om.add_variable(
+            "year", self.time.current_simulation_year,
+            dict(info_map, **{"units": MeasurementUnits.SIMULATION_YEAR})
+        )
+        self.om.add_variable(
+            "calendar_year", self.time.current_calendar_year,
+            dict(info_map, **{"units": MeasurementUnits.CALENDAR_YEAR})
+        )
+        self.om.add_variable(
+            "simulation_day", self.time.simulation_day,
+            dict(info_map, **{"units": MeasurementUnits.SIMULATION_DAY})
+        )
 
     def _advance_time(self) -> None:
         """

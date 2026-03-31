@@ -3,8 +3,6 @@ from typing import Dict
 
 from RUFAS.general_constants import GeneralConstants
 from RUFAS.input_manager import InputManager
-from RUFAS.output_manager import OutputManager
-from RUFAS.units import MeasurementUnits
 from RUFAS.util import Utility
 
 
@@ -13,7 +11,6 @@ class RufasTime:
         """
         This object is responsible for creating and tracking time in the simulation.
         """
-        self.om = OutputManager()
         self.im = InputManager()
 
         config_data: Dict[str, str | int | bool] = {}
@@ -86,26 +83,6 @@ class RufasTime:
         Returns the current simulation day in integer.
         """
         return (self.current_date - self.start_date).days
-
-    def record_time(self) -> None:
-        """
-        Records the current day, simulated year, and calendar year of the simulation in the OutputManager.
-        """
-        info_map = {
-            "class": self.__class__.__name__,
-            "function": self.record_time.__name__,
-            "prefix": "RufasTime",
-        }
-        self.om.add_variable("day", self.current_julian_day, dict(info_map, **{"units": MeasurementUnits.JULIAN_DAY}))
-        self.om.add_variable(
-            "year", self.current_simulation_year, dict(info_map, **{"units": MeasurementUnits.SIMULATION_YEAR})
-        )
-        self.om.add_variable(
-            "calendar_year", self.current_calendar_year, dict(info_map, **{"units": MeasurementUnits.CALENDAR_YEAR})
-        )
-        self.om.add_variable(
-            "simulation_day", self.simulation_day, dict(info_map, **{"units": MeasurementUnits.SIMULATION_DAY})
-        )
 
     def convert_simulation_day_to_date(self, simulation_day: int) -> datetime:
         """
