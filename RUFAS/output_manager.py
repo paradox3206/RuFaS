@@ -7,7 +7,7 @@ from copy import deepcopy
 from enum import Enum
 from functools import partial
 from pathlib import Path
-from typing import Any, Sequence, TextIO, Union, Callable
+from typing import Any, Sequence, TextIO, Union, Callable, Optional
 
 from collections import Counter
 import collections
@@ -18,7 +18,7 @@ import psutil
 from RUFAS.general_constants import GeneralConstants
 from RUFAS.graph_generator import GraphGenerator
 from RUFAS.report_generator import ReportGenerator
-from RUFAS.rufas_time import RufasTime
+# from RUFAS.rufas_time import RufasTime
 from RUFAS.units import MeasurementUnits
 from RUFAS.user_constants import UserConstants
 from RUFAS.util import Utility
@@ -207,7 +207,7 @@ class OutputManager(object):
                     "function": "__init__",
                 },
             )
-            self.time = RufasTime() # Breaks, due to circular reference?
+            self.time: Optional["RufasTime"] = None # self.time = RufasTime breaks, due to circular reference?
             self._variables_usage_counter: Counter[str] = collections.Counter()
             self.is_end_to_end_testing_run: bool = False
             self.is_first_post_processing: bool = True
@@ -335,7 +335,7 @@ class OutputManager(object):
 
     def add_variable(
             self, name: str, value: Any, info_map: dict[str, Any], first_info_map_only: bool = False,
-            override_simday: bool = False
+            overwrite_simulation_day: bool = False
     ) -> None:
         """
         Adds a variable to the pool.
@@ -362,7 +362,7 @@ class OutputManager(object):
         first_info_map_only : bool, default False
             If true, records only the first info map passed for that variable. If false, records all info maps passed
             for that variable.
-        override_simday: bool, default False
+        overwrite_simulation_day: bool, default False
             if true, info_map["simulation_day"] is overridden with the current simulation day if it is present.
 
         Raises
@@ -380,7 +380,8 @@ class OutputManager(object):
             raise KeyError(f"'units' missing in units dict for a variable in {name}.")
         units = self._stringify_units(units)
 
-        if override_simday or "simulation_day" not in info_map.keys():
+        need_simulation_day: bool = overwrite_simulation_day or "simulation_day" not in info_map.keys()
+        if self.time is not None and need_simulation_day:
             info_map["simulation_day"] = self.time.simulation_day
 
         key = self._generate_key(name, info_map)

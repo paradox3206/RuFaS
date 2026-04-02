@@ -14,10 +14,10 @@ from RUFAS.data_structures.crop_soil_to_feed_storage_connection import Harvested
 from RUFAS.data_structures.feed_storage_to_animal_connection import NutrientStandard
 from RUFAS.data_structures.manure_to_crop_soil_connection import ManureEventNutrientRequestResults
 from RUFAS.input_manager import InputManager
+from RUFAS.rufas_time import RufasTime
 from RUFAS.output_manager import OutputManager
 from RUFAS.biophysical.field.manager.field_manager import FieldManager
 from RUFAS.biophysical.manure.manure_manager import ManureManager
-from RUFAS.rufas_time import RufasTime
 from RUFAS.units import MeasurementUnits
 from RUFAS.weather import Weather
 
@@ -102,9 +102,11 @@ class SimulationEngine:
         """
         Initializes the simulation engine.
         """
-        self.om = OutputManager()
-        self.im = InputManager()
         self.time = RufasTime()
+        self.im = InputManager()
+        self.om = OutputManager()
+        if self.om.time is None:
+            self.om.time = self.time
         self.simulation_type = simulation_type
         self.simulate_animals = self.simulation_type.simulate_animals
         self._simulation_type_to_daily_simulation_function = {
@@ -437,9 +439,11 @@ class SimulationEngine:
         """
         if daily_purchased_feeds_fed:
             self.emissions_estimator.calculate_purchased_feed_emissions(daily_purchased_feeds_fed)
-        self.time.record_time()
+        self.record_time()
         self.weather.record_weather(self.time)
 
+    # TODO: I would prefer if record_time() was a method of OutputManager, but I can't figure it out.
+    ## The trouble is that if RufasTime is imported by Output manager, there are circular references.
     def record_time(self) -> None:
         """
         Records the current day, simulated year, and calendar year of the simulation in the OutputManager.
