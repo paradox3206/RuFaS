@@ -4216,7 +4216,7 @@
       "properties": {
         "type": "number",
         "minimum": 1,
-        "maximum": 306,
+        "maximum": 500,
         "default": 155
       }
     },
@@ -4226,7 +4226,7 @@
       "properties": {
         "type": "number",
         "minimum": 1,
-        "maximum": 306
+        "maximum": 500
       }
     },
     "close_up_feeds": {
@@ -4235,7 +4235,7 @@
       "properties": {
         "type": "number",
         "minimum": 1,
-        "maximum": 306
+        "maximum": 500
       }
     },
     "lac_cow_feeds": {
@@ -4244,7 +4244,7 @@
       "properties": {
         "type": "number",
         "minimum": 1,
-        "maximum": 306
+        "maximum": 500
       }
     },
     "purchased_feeds": {
@@ -4255,7 +4255,7 @@
         "purchased_feed": {
           "type": "number",
           "minimum": 1,
-          "maximum": 306
+          "maximum": 500
         },
         "purchased_feed_cost": {
           "type": "number",
@@ -4289,7 +4289,7 @@
             "type": "number",
             "description": "Calf Feed",
             "minimum": 1,
-            "maximum": 306,
+            "maximum": 500,
             "default": 155
           },
           "ration_percentage": {
@@ -4309,7 +4309,7 @@
             "type": "number",
             "description": "Growing Heifers Feed",
             "minimum": 1,
-            "maximum": 306,
+            "maximum": 500,
             "default": 1
           },
           "ration_percentage": {
@@ -4329,7 +4329,7 @@
             "type": "number",
             "description": "Close UP Feed",
             "minimum": 1,
-            "maximum": 306,
+            "maximum": 500,
             "default": 1
           },
           "ration_percentage": {
@@ -4349,7 +4349,7 @@
             "type": "number",
             "description": "Lactating Cow Feed",
             "minimum": 1,
-            "maximum": 306,
+            "maximum": 500,
             "default": 1
           },
           "ration_percentage": {
@@ -4388,7 +4388,7 @@
         "purchased_feed": {
           "type": "number",
           "minimum": 1,
-          "maximum": 306
+          "maximum": 500
         },
         "runtime_purchase_allowance": {
           "type": "number",
