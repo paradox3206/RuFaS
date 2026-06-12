@@ -1,5 +1,5 @@
 {
-  "parallel_workers": 4,
+  "parallel_workers": 12,
   "tasks": [
     {
       "task_type": "SIMULATION_SINGLE_RUN",
@@ -89,15 +89,15 @@
       "random_seed": 42,
       "exclude_info_maps": false   
     },
-        {
-          "task_type": "SIMULATION_SINGLE_RUN",
-          "metadata_file_path": "input/metadata/Northeast_freestall_dairy_metadata_41BP.json",
-          "output_prefix": "northeast_freestall_41BP",
-          "log_verbosity": "errors",
-          "random_seed": 42,
-          "exclude_info_maps": false
-    
-          }
-        ]
+    {
+      "task_type": "SIMULATION_SINGLE_RUN",
+      "metadata_file_path": "input/metadata/Northeast_freestall_dairy_metadata_41BP.json",
+      "output_prefix": "northeast_freestall_41BP",
+      "log_verbosity": "errors",
+      "random_seed": 42,
+      "exclude_info_maps": false
+
+      }
+    ]
     }
       
