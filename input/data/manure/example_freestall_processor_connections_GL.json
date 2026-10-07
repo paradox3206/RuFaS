@@ -13,7 +13,7 @@
       "processor_name": "growing_alley_scraper",
       "destinations": [
         {
-          "receiving_processor_name": "slurry_storage_outdoor_growing",
+          "receiving_processor_name": "compost",
           "proportion": 1.0
         }
               ]
@@ -22,7 +22,7 @@
       "processor_name": "closeup_manual_scraper",
       "destinations": [
         {
-          "receiving_processor_name": "screw_press_1",
+          "receiving_processor_name": "compost",
           "proportion": 1.0
         }
       ]
@@ -34,10 +34,10 @@
           "receiving_processor_name": "slurry_storage_outdoor_lac",
           "proportion": 0.58
         },{
-          "receiving_processor_name": "anaerobic_digester_1",
+          "receiving_processor_name": "anaerobic_digester_1_lac",
           "proportion": 0.05
         },{
-          "receiving_processor_name": "anaerobic_lagoon_1",
+          "receiving_processor_name": "anaerobic_lagoon_1_lac",
           "proportion": 0.37
         }
               ]
@@ -60,14 +60,14 @@
       "destinations": []
     },
     {
-      "processor_name": "anaerobic_lagoon_1",
+      "processor_name": "anaerobic_lagoon_1_lac",
       "destinations": []
     },
     {
-      "processor_name": "anaerobic_digester_1",
+      "processor_name": "anaerobic_digester_1_lac",
       "destinations": [
         {
-          "receiving_processor_name": "anaerobic_lagoon_1",
+          "receiving_processor_name": "anaerobic_lagoon_1_lac",
           "proportion": 1.0
         }
       ]

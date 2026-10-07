@@ -1,7 +1,7 @@
 {
   "anaerobic_digester": [
     {
-      "name": "anaerobic_digester_1",
+      "name": "anaerobic_digester_1_lac",
       "processor_type": "ContinuousMix",
       "anaerobic_digestion_temperature_set_point": 37.5,
       "hydraulic_retention_time": 10,
@@ -103,7 +103,7 @@
       "surface_area": null
     },
     {
-      "name": "anaerobic_lagoon_1",
+      "name": "anaerobic_lagoon_1_lac",
       "processor_type": "AnaerobicLagoon",
       "capacity": 1e10,
       "cover": "no_crust_or_cover",
