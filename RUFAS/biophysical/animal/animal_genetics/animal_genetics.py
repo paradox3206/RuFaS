@@ -306,11 +306,11 @@ class AnimalGenetics:
                 "date_of_latest_data": latest_date,
                 "type_of_genetic_data": data_type,
             }
-            om.add_error(
-                "Animal birthdate out of range for animal genetics data",
-                f"No {data_type} data for {birth_year_month}, using data from closest available date: "
-                f"{clamped_birth_year_month}",
-                info_map,
-            )
+            # om.add_error(
+            #     "Animal birthdate out of range for animal genetics data",
+            #     f"No {data_type} data for {birth_year_month}, using data from closest available date: "
+            #     f"{clamped_birth_year_month}",
+            #     info_map,
+            # )
             birth_year_month = clamped_birth_year_month
         return birth_year_month
