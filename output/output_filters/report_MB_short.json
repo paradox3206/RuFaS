@@ -1,0 +1,715 @@
+{
+    "direction": "landscape",
+    "multiple": [
+        {
+            "name": "Calves",
+            "filters": [
+                "AnimalModuleReporter.report_daily_animal_population.num_calves"
+            ],
+            "vertical_aggregation": "average",
+            "slice_start": -365
+        },
+        {
+            "name": "Heifers",
+            "filters": [
+                "AnimalModuleReporter.report_daily_animal_population.num_(heiferIs|heiferIIs|heiferIIIs)"
+            ],
+            "vertical_aggregation": "average",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": true,
+            "slice_start": -365
+        },
+        {
+            "name": "Dry cows",
+            "filters": [
+                "AnimalModuleReporter.report_daily_animal_population.num_dry_cows"
+            ],
+            "vertical_aggregation": "average",
+            "slice_start": -365
+        },
+        {
+            "name": "Milking cows",
+            "filters": [
+                "AnimalModuleReporter.report_daily_animal_population.num_lactating_cows"
+            ],
+            "vertical_aggregation": "average",
+            "slice_start": -365
+        },
+        {
+            "name": "Total cows",
+            "filters": [
+                "AnimalModuleReporter.report_daily_animal_population.num_cows_total"
+            ],
+            "vertical_aggregation": "average",
+            "slice_start": -365
+        },
+        {
+            "name": "Total milk, kg",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.daily_milk_production"
+            ],
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Milk per cow/d, kg",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.daily_milk_production",
+                "AnimalModuleReporter.report_daily_animal_population.num_lactating_cows"
+            ],
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "AnimalModuleReporter.report_herd_statistics_data.daily_milk_production",
+                "AnimalModuleReporter.report_daily_animal_population.num_lactating_cows"
+            ],
+            "horizontal_first": true,
+            "vertical_aggregation": "average",
+            "slice_start": -365
+        },
+        {
+            "name": "% milk fat",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.herd_milk_fat_percent"
+            ],
+            "constants": {
+                "By 100": 100
+            },
+            "vertical_aggregation": "average",
+            "horizontal_aggregation": "division",
+            "slice_start": -365
+        },
+        {
+            "name": "% milk protein",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.herd_milk_protein_percent"
+            ],
+            "constants": {
+                "By 100": 100
+            },
+            "vertical_aggregation": "average",
+            "horizontal_aggregation": "division",
+            "slice_start": -365
+        },
+        {
+            "name": "Milk fat, kg",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.herd_milk_fat_kg"
+            ],
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Milk protein, kg",
+            "filters": [
+                "AnimalModuleReporter.report_herd_statistics_data.herd_milk_protein_kg"
+            ],
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "weighted fat value",
+            "cross_references": [
+                "Milk fat, kg_ver_agg"
+            ],
+            "constants": {
+                "fat weight": 12.2
+            },
+            "horizontal_aggregation": "product"
+        },
+        {
+            "name": "weighted protein value",
+            "cross_references": [
+                "Milk protein, kg_ver_agg"
+            ],
+            "constants": {
+                "protein weight": 7.7
+            },
+            "horizontal_aggregation": "product"
+        },
+        {
+            "name": "weighted milk value",
+            "cross_references": [
+                "Total milk, kg_ver_agg"
+            ],
+            "constants": {
+                "milk weight": 0.25
+            },
+            "horizontal_aggregation": "product"
+        },
+        {
+            "name": "Herd FPCM, kg",
+            "cross_references": [
+                "weighted fat value_hor_agg",
+                "weighted protein value_hor_agg",
+                "weighted milk value_hor_agg"
+            ],
+            "horizontal_aggregation": "sum"
+        },
+        {
+            "name": "Cow FPCM/d, kg",
+            "cross_references": [
+                "Herd FPCM, kg_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "Days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "Herd FPCM, kg_hor_agg",
+                "Milking cows_ver_agg",
+                "Days per year"
+            ]
+        },
+        {
+            "name": "Lact cow DMI, kg",
+            "filters": [
+                "AnimalModuleReporter.report_daily_ration_per_pen.ration_daily_feed_totals_.*_LAC_COW"
+            ],
+            "variables": [
+                "dry_matter_intake_total"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Lact cow DMI/cow/d, kg",
+            "cross_references": [
+                "Lact cow DMI, kg_ver_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "Days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "Lact cow DMI, kg_ver_hor_agg",
+                "Milking cows_ver_agg",
+                "Days per year"
+            ]
+        },
+        {
+            "name": "Manure nitrous oxide, lact cows, kg",
+            "filters": [
+                "Manure.Storage..*lac.*.storage_nitrous_oxide_N"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": false,
+            "slice_start": -365
+        },
+        {
+            "name": "Lact cow manure N2O kg/cow/d",
+            "cross_references": [
+                "Manure nitrous oxide, lact cows, kg_ver_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "Manure nitrous oxide, lact cows, kg_ver_hor_agg",
+                "Milking cows_ver_agg",
+                "days per year"
+            ]
+        },
+        {
+            "name": "LAC-COW enteric methane, g",
+            "filters": [
+                "AnimalModuleReporter.report_enteric_methane_emission.enteric_methane_emission_for_LAC_COW.*"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": false,
+            "slice_start": -365
+        },
+        {
+            "name": "LAC-COW enteric methane, kg",
+            "cross_references": [
+                "LAC-COW enteric methane, g_ver_hor_agg"
+            ],
+            "constants": {
+                "g to kg": 0.001
+            },
+            "horizontal_aggregation": "product"
+        },
+        {
+            "name": "Lact cow enteric methane kg/cow/d",
+            "cross_references": [
+                "LAC-COW enteric methane, kg_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "LAC-COW enteric methane, kg_hor_agg",
+                "Milking cows_ver_agg",
+                "days per year"
+            ]
+        },
+        {
+            "name": "LAC Manure VS, kg",
+            "filters": [
+                "AnimalModuleReporter.report_manure_excretions.LAC_COW_.*_volatile_solids*"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": false,
+            "slice_start": -365
+        },
+        {
+            "name": "LAC Manure VS, kg/cow/d",
+            "cross_references": [
+                "LAC Manure VS, kg_ver_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "Days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "LAC Manure VS, kg_ver_hor_agg",
+                "Milking cows_ver_agg",
+                "Days per year"
+            ]
+        },
+        {
+            "name": "LAC Manure N, kg",
+            "filters": [
+                "AnimalModuleReporter.report_manure_excretions.LAC_COW_.*_manure_nitrogen"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": false,
+            "slice_start": -365
+        },
+        {
+            "name": "LAC Manure N, kg/cow/d",
+            "cross_references": [
+                "LAC Manure N, kg_ver_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "Days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "LAC Manure N, kg_ver_hor_agg",
+                "Milking cows_ver_agg",
+                "Days per year"
+            ]
+        },
+        {
+            "name": "LAC Manure P, g",
+            "filters": [
+                "AnimalModuleReporter.report_manure_excretions.LAC_COW_.*phosphorus$"
+            ],
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "horizontal_first": false,
+            "slice_start": -365
+        },
+        {
+            "name": "LAC Manure P, g/cow/d",
+            "cross_references": [
+                "LAC Manure P, g_ver_hor_agg",
+                "Milking cows_ver_agg"
+            ],
+            "constants": {
+                "Days per year": 365
+            },
+            "horizontal_aggregation": "division",
+            "horizontal_order": [
+                "LAC Manure P, g_ver_hor_agg",
+                "Milking cows_ver_agg",
+                "Days per year"
+            ]
+        },
+
+
+                {
+                    "name": "Total LAC COW housing methane, kg/day",
+                    "filters": [
+                        "Manure.SingleStreamHandler.*lac.*housing_methane_emissions"
+                    ],
+                    "vertical_aggregation": "average",
+                    "horizontal_aggregation": "sum",
+                    "horizontal_first": true,
+                    "slice_start": -365
+                },
+                {
+                    "name": "Total LAC COW housing ammonia, kg/day",
+                    "filters": [
+                        "Manure.SingleStreamHandler.*lac.*housing_ammonia_N_emissions"
+                    ],
+                    "vertical_aggregation": "average",
+                    "horizontal_aggregation": "sum",
+                    "horizontal_first": true,
+                    "slice_start": -365
+                },
+                {
+                    "name": "Total LAC COW storage methane, kg/day",
+                    "filters": [
+                        "Manure.Storage.*lac.*storage_methane$",
+                        ".*methane_leakage_mass"
+                    ],
+                    "vertical_aggregation": "average",
+                    "horizontal_aggregation": "sum",
+                    "horizontal_first": true,
+                    "slice_start": -365
+                },
+                {
+                    "name": "Total LAC COW storage ammonia, kg/day",
+                    "filters": [
+                        "Manure.Storage.*lac.*storage_ammonia_N"
+                    ],
+                    "vertical_aggregation": "average",
+                    "horizontal_aggregation": "sum",
+                    "horizontal_first": true,
+                    "slice_start": -365
+                },
+                {
+                    "name": "Total LAC COW manure methane, kg/day",
+                    "cross_references": [
+                        "Total LAC COW housing methane, kg/day_hor_ver_agg",
+                        "Total LAC COW storage methane, kg/day_hor_ver_agg"
+                    ],
+                    "horizontal_aggregation": "sum"
+                },
+                {
+                    "name": "Total LAC COW manure ammonia, kg/day",
+                    "cross_references": [
+                        "Total LAC COW housing ammonia, kg/day_hor_ver_agg",
+                        "Total LAC COW storage ammonia, kg/day_hor_ver_agg"
+                    ],
+                    "horizontal_aggregation": "sum"
+                },
+                {
+                    "name": "Total LAC COW manure methane, kg/day/cow",
+                    "cross_references": [
+                        "Total LAC COW manure methane, kg/day_hor_agg",
+                        "Milking cows_ver_agg"
+                    ],
+                    "horizontal_aggregation": "division"
+                },
+                {
+                    "name": "Total LAC COW manure ammonia, kg/day/cow",
+                    "cross_references": [
+                        "Total LAC COW manure ammonia, kg/day_hor_agg",
+                        "Milking cows_ver_agg"
+                    ],
+                    "horizontal_aggregation": "division"
+                },
+
+
+
+        {
+            "name": "DMI by feed",
+            "filters": [
+                "AnimalModuleReporter.report_daily_herd_total_ration.ration_daily_feed_total_across_pens"
+            ],
+            "variables": [
+                "^[0-9]+$"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+
+        {
+            "name": "Purchased Feed DMI by feed, kg",
+            "filters": [
+                "FeedManager._log_feed_deductions.purchased_feed_.*_fed"
+            ],
+            "variables": [
+                "amount"
+            ],
+            "use_verbose_report_name": true,
+            "expand_data": true,
+            "use_fill_value_in_gaps": true,
+            "use_fill_value_at_end": true,
+            "fill_value": 0,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Farmgrown Feed DMI by feed, kg",
+            "filters": [
+                "FeedManager._log_feed_deductions.farmgrown_feed_.*_fed"
+            ],
+            "variables": [
+                "amount"
+            ],
+            "use_verbose_report_name": true,
+            "expand_data": true,
+            "use_fill_value_in_gaps": true,
+            "use_fill_value_at_end": true,
+            "fill_value": 0,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },{
+            "name": "Total Purchased Feed LUC emissions",
+            "filters": [
+                "EmissionsEstimator.calculate_purchased_feed_emissions.land_use_change_emissions.*"
+            ],
+            "variables": [
+                "^[0-9]+$"
+            ],
+            "expand_data": true,
+            "use_fill_value_in_gaps": true,
+            "use_fill_value_at_end": true,
+            "fill_value": 0,
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "slice_start": -365
+        },{
+            "name": "Total Purchased Feed emissions-including LUC",
+            "filters": [
+                "EmissionsEstimator.calculate_purchased_feed_emissions.purchased_feed_emissions.*"
+            ],
+            "variables": [
+                "^[0-9]+$"
+            ],
+            "expand_data": true,
+            "use_fill_value_in_gaps": true,
+            "use_fill_value_at_end": true,
+            "fill_value": 0,
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "horizontal_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Total Purchased Feed emissions-excluding LUC",
+            "cross_references": [
+                "Total Purchased Feed emissions-including LUC_ver_hor_agg",
+                "Total Purchased Feed LUC emissions_ver_hor_agg"
+            ],
+            "horizontal_aggregation": "subtraction",
+            "horizontal_order": [
+                "Total Purchased Feed emissions-including LUC_ver_hor_agg",
+                "Total Purchased Feed LUC emissions_ver_hor_agg"
+            ]
+        },{
+            "name": "Total Purchased Feed emissions by feed-including LUC",
+            "filters": [
+                "EmissionsEstimator.calculate_purchased_feed_emissions.purchased_feed_emissions.*"
+            ],
+            "variables": [
+                "^[0-9]+$"
+            ],
+            "expand_data": true,
+            "use_fill_value_in_gaps": true,
+            "use_fill_value_at_end": true,
+            "fill_value": 0,
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },{
+            "name": "Total Purchased LUC emissions by feed",
+            "filters": [
+                "EmissionsEstimator.calculate_purchased_feed_emissions.land_use_change_emissions.*"
+            ],
+            "variables": [
+                "^[0-9]+$"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },{
+            "name": "Homegrown feed direct N2O emissions",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.direct_n2o_nitrogen_emissions_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed ammonia nitrogen emissions",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.ammonia_nitrogen_emissions_for_feed.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed nitrogen fertilizer applied",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.nitrogen_fertilizer_applied_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed phosphorus fertilizer applied",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.phosphorus_fertilizer_applied_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed potassium fertilizer applied",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.potassium_fertilizer_applied_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed manure nitrogen applied",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.manure_nitrogen_applied_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed manure nitrogen applied",
+            "filters": [
+                "EmissionsEstimator._report_daily_farmgrown_feed_fed_emissions_and_resources.manure_nitrogen_applied_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed LCA carbon emissions",
+            "filters": [
+                "EmissionsEstimator._calculate_and_report_lca_emissions.lca_carbon_emissions_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Homegrown feed LUC emissions",
+            "filters": [
+                "EmissionsEstimator._calculate_and_report_lca_emissions.lca_land_use_change_emissions_for_feed_.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Total eroded sediment",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.eroded_sediment.field.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Phosphorus Runoff",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.soil_phosphorus_runoff.field.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Fertilizer P Runoff",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.runoff_fertilizer_phosphorus.field='.*'"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Nitrate Percolate",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.percolated_nitrates.field='.*',layer='3'"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Soil CO2 emissions",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.profile_carbon_emissions.field.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Soil N2O emissions",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.nitrous_oxide_emissions.field=.*,layer=.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "Soil NH3 emissions",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.ammonia_emissions.field=.*,layer=.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -365
+        },
+        {
+            "name": "profile_carbon_total-1",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.total_soil_carbon_amount.field=.*"
+            ],
+            "use_verbose_report_name": true,
+            "slice_start": -1
+        },
+        {
+            "name": "profile_carbon_total-365",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.total_soil_carbon_amount.field=.*"
+            ],
+            "use_verbose_report_name": true,
+            "slice_start": -365,
+            "slice_end": -364
+        },
+        {
+            "name": "Phosphorus Runoff prior year",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.soil_phosphorus_runoff.field.*"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -730,
+            "slice_end": -365
+        },
+        {
+            "name": "Fertilizer P Runoff Previous Year",
+            "filters": [
+                "FieldDataReporter.send_soil_daily_variables.runoff_fertilizer_phosphorus.field='.*'"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -730,
+            "slice_end": -365
+        },
+        {
+            "name": "Nitrate Percolate prior year",
+            "filters": [
+                "FieldDataReporter.send_soil_layer_daily_variables.percolated_nitrates.field='.*',layer='3'"
+            ],
+            "use_verbose_report_name": true,
+            "vertical_aggregation": "sum",
+            "slice_start": -730,
+            "slice_end": -365
+        }
+    ]
+}
